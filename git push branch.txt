@@ -1,0 +1,30 @@
+Got it 👍 That message means your frontend/ folder didn’t get staged for commit — only git push.txt is showing as untracked.
+
+Let’s fix this step by step:
+
+✅ Step 1: Make sure you’re in the project root
+cd "D:\Internship Work\project\online-tiffin-app"
+
+✅ Step 2: Check if the frontend/ folder exists
+dir frontend
+
+
+You should see your frontend project files inside (like package.json, src/, etc.).
+
+✅ Step 3: Add only the frontend/ folder
+git add frontend/*
+
+
+If you also want to include hidden files (like .gitignore), run:
+
+git add frontend
+
+✅ Step 4: Commit
+git commit -m "Add frontend code"
+
+✅ Step 5: Push to branch
+git push origin frontend
+
+
+⚡ Question for you:
+Do you want the frontend branch to only contain frontend code (and not backend at all), or should it still keep the backend code but highlight frontend work?
