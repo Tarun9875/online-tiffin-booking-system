@@ -14,7 +14,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider
+  Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -43,14 +43,18 @@ export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toggleDrawer = (open) => () => setDrawerOpen(open);
 
-  // Menu links (added "Categories")
+  // Menu links
   const menuLinks = [
     { name: "Home", path: "/" },
-    { name: "Categories", path: "/categories" },  // <-- new
-    { name: "Menu", path: "/customer-tiffin-menu" },
+    { name: "Categories", path: "/categories" },
     { name: "Contact", path: "/contact" },
     ...(!user ? [{ name: "About Us", path: "/about-us" }] : []),
-    ...(user ? [{ name: "My Orders", path: "/my-orders" }] : []),
+    ...(user
+      ? [
+          { name: "Menu", path: "/customer-tiffin-menu" },
+          { name: "My Orders", path: "/my-orders" },
+        ]
+      : []),
   ];
 
   return (
@@ -61,7 +65,12 @@ export default function Header() {
           <Box
             component={Link}
             to="/"
-            sx={{ display: "flex", alignItems: "center", textDecoration: "none", color: "#fff" }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              textDecoration: "none",
+              color: "#fff",
+            }}
           >
             <Box component="img" src={logo} alt="Logo" sx={{ height: 50, width: 50, mr: 1 }} />
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
@@ -123,7 +132,12 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
           <List>
             {menuLinks.map((link) => (
               <ListItem key={link.name} button component={Link} to={link.path}>

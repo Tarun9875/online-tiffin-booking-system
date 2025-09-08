@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
-// Mock authService for simulation
+// --- Mock admin auth service (replace with real API later) ---
 export const loginAdmin = async (email, password) => {
-  // Simulate backend delay
   return new Promise((resolve) => {
     setTimeout(() => {
       if (email === "admin@example.com" && password === "admin123") {
@@ -19,42 +18,51 @@ export const loginAdmin = async (email, password) => {
   });
 };
 
-export const logout = () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
-};
-
-export const getCurrentUser = () => {
+// Helpers for localStorage
+const getStoredUser = () => {
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 };
 
-export const getToken = () => localStorage.getItem("token");
+const getStoredToken = () => localStorage.getItem("token");
 
-const AuthContext = createContext({});
+// --- Auth Context ---
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => getCurrentUser() || null);
-  const [token, setToken] = useState(() => getToken() || null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(() => getStoredUser());
+  const [token, setToken] = useState(() => getStoredToken());
 
   useEffect(() => {
-    setUser(getCurrentUser());
-    setToken(getToken());
-    setLoading(false);
+    // Sync state with localStorage on mount
+    setUser(getStoredUser());
+    setToken(getStoredToken());
   }, []);
 
+  // Login function
   const login = async (email, password) => {
     const response = await loginAdmin(email, password);
+
     if (response?.data?.user && response?.data?.token) {
       setUser(response.data.user);
       setToken(response.data.token);
+
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("token", response.data.token);
     }
+
     return response;
   };
 
+  // Logout function
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  };
+
+  // Allow manual setAuth (useful after refresh or token refresh)
   const setAuth = ({ user, token }) => {
     if (user) {
       setUser(user);
@@ -66,19 +74,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logoutUser = () => {
-    logout();
-    setUser(null);
-    setToken(null);
-  };
-
   return (
-    <AuthContext.Provider value={{ user, token, login, logout: logoutUser, setAuth, loading }}>
+    <AuthContext.Provider value={{ user, token, login, logout, setAuth }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
+// Custom hook
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");

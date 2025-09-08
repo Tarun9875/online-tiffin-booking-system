@@ -23,7 +23,7 @@ export default function CustomerLoginPage() {
         email,
         avatar: "/assets/images/user-avatar.jpg", // default avatar
       });
-      navigate("/"); // redirect to homepage
+      navigate("/customer-homepage"); // redirect to homepage
     } else {
       setError("Invalid email or password");
     }

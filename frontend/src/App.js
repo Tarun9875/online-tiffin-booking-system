@@ -13,6 +13,7 @@ import AdminHeader from "./components/layout/AdminHeader";
 
 // Customer Pages
 import HomePage from "./pages/HomePage";
+import Home from "./pages/customer/CustomerHomepage";
 import CustomerLoginPage from "./pages/customer/CustomerLoginPage";
 import CustomerRegisterPage from "./pages/customer/CustomerRegisterPage";
 import CategoriesPage from "./pages/customer/CategoriesPage";
@@ -21,6 +22,7 @@ import OrderPage from "./pages/customer/OrderPage";
 import MyOrders from "./pages/customer/MyOrders";
 import MyAccountPage from "./pages/customer/MyAccountPage";
 import EditMyProfilePage from "./pages/customer/EditMyProfilePage";
+
 
 // Admin Pages
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
@@ -44,6 +46,7 @@ function App() {
         <Routes>
           {/* Customer Routes */}
           <Route path="/" element={<><Header /><HomePage /></>} />
+          <Route path="/customer-homepage" element={<><Header /><Home /></>} /> 
           <Route path="/customer-login" element={<><Header /><CustomerLoginPage /></>} />
           <Route path="/customer-register" element={<><Header /><CustomerRegisterPage /></>} />
           <Route path="/categories" element={<><Header /><CategoriesPage /></>} />
